@@ -1,0 +1,16 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+{% if not user.is_staff %}
+    <br>
+    <br>
+    <h3>Tu carrito</h3>
+    <ul>
+        {% for articulo in carrito %}
+            <li>{{articulo}}</li>
+        {% empty %}
+            <li>No hay articulos en el carrito.</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock %}

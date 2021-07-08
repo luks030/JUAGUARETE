@@ -1,0 +1,12 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+<h2>{{ articulo.titulo }}</h2>
+<div class="alert alert-info" role="alert">{{ articulo.seccion }}</div>
+<p><span class="publicacion_fecha" >{{ articulo.fecha_publicacion }}</span></p>
+<a href="{% url 'sitio:carrito' articulo.id %}">Poner en carrito</a>
+<p><img src="{{ media_url  }}{{ articulo.imagen.url }}" alt="{{ articulo.imagen.name }}" /></p>
+<h3>Contenido:</h3>
+<p id="contenido">{{ articulo.contenido |safe }}</p>
+<p>Publicado por <span class="badge badge-secondary">{{ articulo.publicador }}</span></p>
+<a href="{% url 'sitio:index'%}">Volver</a>
+{% endblock %}

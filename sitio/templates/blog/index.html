@@ -1,0 +1,45 @@
+{% extends "blog/layout.html" %}
+{% block content %}
+    <h2>Articulos</h2>
+    {% if seccion_seleccionada %}
+        <div class="alert alert-info" role="alert">{{ seccion_seleccionada }}</div>
+    {% else %}
+        <div class="alert alert-info" role="alert">Todos los Articulos</div>
+    {% endif %}
+
+
+    <div class="container">
+        <div class="row align-items-start">
+        {% for un_articulo in lista_articulos %}
+          <div class="col">
+            <a href="{% url 'sitio:articulo' un_articulo.id %}">Ver #{{un_articulo.id}}</a> /                
+                {% if perms.sitio.change_articulo %}
+                <a href="{% url 'sitio:articulo_editar' un_articulo.id %}">Modificar</a> / 
+                {% endif %}
+                {% if perms.sitio.delete_articulo %} 
+                <a href="{% url 'sitio:articulo_eliminar' un_articulo.id %}">Eliminar</a>  
+                {% endif %}
+                --- {{un_articulo}}
+          </div>
+        {% empty %}
+        <li>No hay articulos en ésta Sección.</li>
+        {% endfor %}
+        </div>
+    </div>
+
+    
+    
+    {% if not user.is_staff %}
+    <br>
+    <br>
+    <h3>Tu carrito</h3>
+    <ul>
+        {% for articulo in carrito %}
+            <li>{{articulo}}
+            </li>
+        {% empty %}
+            <li>No hay articulos en el carrito.</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

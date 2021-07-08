@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>JAGUARETE</title>
+        <link rel="stylesheet" href="{% static 'estilos.css' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="{% static 'scripts.js' %}"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <div id="bloque_login">
+                    {% if user.is_authenticated %}
+                        Estas conectado como: {{ user.get_username }} <a role="button" class="btn btn-outline-warning btn-sm" href="{% url 'logout'%}?next={{request.path}}">Salir</a>
+                        {% if not user.is_staff %} <a role="button" class="btn btn-outline-success" href="{% url 'sitio:carrito_us' %}">Carrito</a>{% endif %}
+                    {% else %}                  
+                        <a role="button" class="btn btn-outline-success btn-sm" href="{% url 'login'%}?next={{request.path}}">Login</a>
+                        <a role="button" class="btn btn-outline-success btn-sm" href="#">Registrarse</a>
+                        <a role="button" class="btn btn-outline-success btn-sm" href="{% url 'login'%}?next={{request.path}}">Carrito</a> 
+                    {% endif %}
+
+                    
+                </div>
+                <a><img src="{% static 'LOGO.png' %}" alt="Logo" /></a>
+            </header>
+            <nav id="menu_principal" class="navbar navbar-expand-lg navbar-light bg-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sitio:index' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <a type="button" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                            Categorias
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for seccion in lista_secciones %}
+                                    <a class="dropdown-item" href="{% url 'sitio:filtro_secciones' seccion.id%}">{{ seccion }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Acerca de </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">contacto </a>
+                    </li>
+                     {% if perms.sitio %} 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sitio:articulo_alta'%}">Nuevo producto </a>
+                    </li>
+                    {% endif %}
+                <ul>
+                    <nav class="navbar navbar-light bg-light">
+                        <div class="container-fluid">
+                          <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                          </form>
+                        </div>
+                      </nav>
+            </nav>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
